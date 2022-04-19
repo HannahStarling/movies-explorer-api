@@ -25,7 +25,10 @@
   },
   "homepage": "https://github.com/HannahStarling/movies-explorer-api#readme",
   "dependencies": {
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "celebrate": "^15.0.1",
+    "mongoose": "^6.2.4",
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "eslint": "^8.13.0",
