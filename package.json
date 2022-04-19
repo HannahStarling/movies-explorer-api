@@ -1,0 +1,35 @@
+{
+  "name": "movies-explorer-api",
+  "version": "1.0.0",
+  "description": "API (REST) on node.js (express.js) with MongoDB (mongoose)",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "lint": "npx eslint .",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HannahStarling/movies-explorer-api.git"
+  },
+  "keywords": [
+    "expressjs",
+    "nodejs",
+    "mongodb",
+    "mongoose"
+  ],
+  "author": "Anna Tuban",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HannahStarling/movies-explorer-api/issues"
+  },
+  "homepage": "https://github.com/HannahStarling/movies-explorer-api#readme",
+  "dependencies": {
+    "express": "^4.17.3"
+  },
+  "devDependencies": {
+    "eslint": "^8.13.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "nodemon": "^2.0.15"
+  }
+}
