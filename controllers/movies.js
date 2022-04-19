@@ -1,3 +1,4 @@
+const { ApiError } = require('../errors/ApiError');
 const Movie = require('../models/movie');
 
 const getMovies = async (req, res, next) => {
@@ -52,10 +53,10 @@ const createMovie = async (req, res, next) => {
         thumbnail: movie.thumbnail,
         movieId: movie.movieId,
       })
-      : next(new Error('iternal'));
+      : next(ApiError.iternal());
   } catch (error) {
     return error.name === 'CastError' || error.name === 'ValidationError'
-      ? next(new Error('Введены некорректные данные'))
+      ? next(ApiError.badRequest())
       : next(error);
   }
 };
@@ -69,11 +70,11 @@ const deleteMovie = async (req, res, next) => {
       const deleteCard = await Movie.findByIdAndRemove(id);
       return res.status(200).send(deleteCard);
     }
-    return next(new Error('Forbidden'));
+    return next(ApiError.forbidden());
   } catch (error) {
     return error.name === 'CastError'
       ? next(
-        new Error('Введены некорректные данные, невозможно удалить фильм.'),
+        ApiError.badRequest(),
       )
       : next(error);
   }
