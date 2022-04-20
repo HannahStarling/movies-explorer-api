@@ -1,17 +1,17 @@
 const bcrypt = require('bcryptjs');
-const { jwt } = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const { ApiError } = require('../errors/ApiError');
 const User = require('../models/user');
-const { jwtConfig, cookieConfig } = require('../utils/constants');
+const { JWT_CONFIG, COOKIE_CONFIG } = require('../utils/constants');
 
 const signin = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const { key, expires } = jwtConfig;
+    const { key, expires } = JWT_CONFIG;
     const user = await User.findUserByCredentials(email, password);
     const token = jwt.sign({ _id: user._id }, key, expires);
     return user ? res
-      .cookie('jwt', token, cookieConfig)
+      .cookie('jwt', token, COOKIE_CONFIG)
       .status(200)
       .send({ message: 'Авторизация прошла успешно!' }) : next(ApiError.iternal());
   } catch (error) {

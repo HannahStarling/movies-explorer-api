@@ -1,25 +1,26 @@
 const winston = require('winston');
-const expressWinston = require('express-winston');
+const { logger, errorLogger } = require('express-winston');
+const { LOGGER } = require('../utils/constants');
 
-const dirname = 'logs';
 const format = winston.format.json();
+const { DIRNAME, ERROR_FILENAME, REQUEST_FILENAME } = LOGGER;
 
-const requestLogger = expressWinston.logger({
+const requestsLogger = logger({
   transports: [
-    new winston.transports.File({ dirname, filename: 'request.log' }),
+    new winston.transports.File({ DIRNAME, filename: ERROR_FILENAME }),
   ],
   format,
 });
 
 // логгер ошибок
-const errorLogger = expressWinston.errorLogger({
+const errorsLogger = errorLogger({
   transports: [
-    new winston.transports.File({ dirname, filename: 'error.log' }),
+    new winston.transports.File({ DIRNAME, filename: REQUEST_FILENAME }),
   ],
   format,
 });
 
 module.exports = {
-  requestLogger,
-  errorLogger,
+  requestsLogger,
+  errorsLogger,
 };

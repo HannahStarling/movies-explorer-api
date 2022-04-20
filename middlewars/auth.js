@@ -1,13 +1,14 @@
 const jwt = require('jsonwebtoken');
-const { jwtKey } = require('../utils/constants');
+const { ApiError } = require('../errors/ApiError');
+const { JWT_KEY } = require('../utils/constants');
 
 const auth = (req, res, next) => {
   const token = req.cookies.jwt;
   let payload;
   try {
-    payload = jwt.verify(token, jwtKey);
+    payload = jwt.verify(token, JWT_KEY);
   } catch (err) {
-    throw new Error('Необходима авторизация');
+    throw ApiError.unauthorized();
   }
   req.user = payload;
   return next();
