@@ -20,8 +20,8 @@ const signin = async (req, res, next) => {
 };
 
 const signout = async (req, res, next) => {
-  res.clearCookie('jwt').send({ message: 'Успешно' });
-  next();
+  res.clearCookie('jwt');
+  next(ApiError.unauthorized());
 };
 
 const createUser = async (req, res, next) => {
