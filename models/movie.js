@@ -45,11 +45,10 @@ const movieSchema = new Schema({
     ref: 'user',
     required: true,
   },
-  // movieId — id фильма, который содержится в ответе сервиса MoviesExplorer. Обязательное поле.
-  // movieId: {
-  //   type: String,
-  //   required: true,
-  // },
+  movieId: {
+    type: Number,
+    required: true,
+  },
   nameRU: {
     type: String,
     required: true,
