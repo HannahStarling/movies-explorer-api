@@ -47,10 +47,11 @@ const createMovie = async (req, res, next) => {
         year: movie.year,
         description: movie.description,
         image: movie.image,
-        trailer: movie.trailer,
+        trailerLink: movie.trailer,
         nameRU: movie.nameRU,
-        nameEN: movie.nameEN,
         thumbnail: movie.thumbnail,
+        owner: movie.owner,
+        nameEN: movie.nameEN,
         movieId: movie.movieId,
       })
       : next(ApiError.iternal());
@@ -73,9 +74,7 @@ const deleteMovie = async (req, res, next) => {
     return next(ApiError.forbidden());
   } catch (error) {
     return error.name === 'CastError'
-      ? next(
-        ApiError.badRequest(),
-      )
+      ? next(ApiError.badRequest())
       : next(error);
   }
 };

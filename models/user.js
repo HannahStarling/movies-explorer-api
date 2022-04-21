@@ -24,13 +24,18 @@ const userSchema = new Schema({
   },
 });
 
-userSchema.statics.findUserByCredentials = async function findUserByCredentials(email, password) {
+userSchema.statics.findUserByCredentials = async function findUserByCredentials(
+  email,
+  password,
+) {
   const user = await this.findOne({ email }).select('+password');
   if (!user) {
     return Promise.reject(ApiError.badRequest('Неправильные почта или пароль'));
   }
   const matched = bcrypt.compare(password, user.password);
-  return !matched ? Promise.reject(ApiError.badRequest('Неправильные почта или пароль')) : user;
+  return !matched
+    ? Promise.reject(ApiError.badRequest('Неправильные почта или пароль'))
+    : user;
 };
 
 module.exports = model('user', userSchema);

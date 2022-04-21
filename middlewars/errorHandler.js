@@ -1,9 +1,16 @@
 const { ApiError } = require('../errors/ApiError');
+const { ERROR_MESSAGES } = require('../utils/constants');
 
-// eslint-disable-next-line no-unused-vars
+const { INTERNAL } = ERROR_MESSAGES;
+
 const errorHandler = (err, req, res, next) => {
-  const { status } = err;
-  return err instanceof ApiError ? res.status(status).json({ message: err.message }) : res.status(500).json({ message: `На сервере произошла ошибка: ${err}` });
+  const { status = 500, message = INTERNAL } = err;
+  if (next) {
+    next();
+  }
+  return err instanceof ApiError
+    ? res.status(status).send({ message })
+    : res.status(500).json({ message }); // test
 };
 
 module.exports = { errorHandler };

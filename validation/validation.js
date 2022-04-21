@@ -1,18 +1,6 @@
-const { celebrate, Joi, CelebrateError } = require('celebrate');
-const { isValidObjectId } = require('mongoose');
-const { isURL } = require('validator');
+const { celebrate, Joi } = require('celebrate');
 
-const isValidId = Joi.custom((value) => {
-  if (isValidObjectId(value)) return value;
-  throw new CelebrateError('Неверный id');
-});
-
-const validateURL = (value) => {
-  if (!isURL(value, { require_protocol: true })) {
-    throw new CelebrateError('Неправильный формат ссылки');
-  }
-  return value;
-};
+const { isValidId, validateURL } = require('./heplers');
 
 const validateDataBaseId = celebrate({
   params: Joi.object().keys({

@@ -10,10 +10,12 @@ const signin = async (req, res, next) => {
     const { key, expires } = JWT_CONFIG;
     const user = await User.findUserByCredentials(email, password);
     const token = jwt.sign({ _id: user._id }, key, expires);
-    return user ? res
-      .cookie('jwt', token, COOKIE_CONFIG)
-      .status(200)
-      .send({ message: 'Авторизация прошла успешно!' }) : next(ApiError.iternal());
+    return user
+      ? res
+        .cookie('jwt', token, COOKIE_CONFIG)
+        .status(200)
+        .send({ message: 'Авторизация прошла успешно!' })
+      : next(ApiError.iternal());
   } catch (error) {
     return next(error);
   }
@@ -26,24 +28,21 @@ const signout = async (req, res, next) => {
 
 const createUser = async (req, res, next) => {
   try {
-    const {
-      name, email, password,
-    } = req.body;
+    const { name, email, password } = req.body;
 
-    const hash = await bcrypt
-      .hash(password, 10);
+    const hash = await bcrypt.hash(password, 10);
     const user = await User.create({
       name,
       email,
       password: hash,
     });
-    return user ? res.status(200).send({
-      name: user.name,
-      about: user.about,
-      avatar: user.avatar,
-      _id: user._id,
-      email: user.email,
-    }) : next(ApiError.notFound());
+    return user
+      ? res.status(200).send({
+        name: user.name,
+        _id: user._id,
+        email: user.email,
+      })
+      : next(ApiError.notFound());
   } catch (error) {
     if (error.name === 'CastError' || error.name === 'ValidationError') {
       return next(ApiError.badRequest());
