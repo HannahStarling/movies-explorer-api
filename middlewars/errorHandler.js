@@ -10,7 +10,7 @@ const errorHandler = (err, req, res, next) => {
   }
   return err instanceof ApiError
     ? res.status(status).send({ message })
-    : res.status(500).json({ message }); // test
+    : res.status(500).json({ message });
 };
 
 module.exports = { errorHandler };

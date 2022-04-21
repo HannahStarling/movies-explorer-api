@@ -82,10 +82,11 @@ const updateUser = async (req, res, next) => {
       ? res.status(200).send({ name: user.name, email: user.email })
       : next(ApiError.notFound());
   } catch (error) {
-    if (error.name === 'CastError' || error.name === 'ValidationError') {
-      return next(ApiError.badRequest(PROFILE_UPDATE));
-    }
-    return next(error);
+    const { name, code } = error;
+    if (code === 11000) { return ApiError.conflict(); }
+    return name === 'CastError' || name === 'ValidationError'
+      ? next(ApiError.badRequest(PROFILE_UPDATE))
+      : next(error);
   }
 };
 

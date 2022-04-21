@@ -1,5 +1,23 @@
 const rateLimit = require('express-rate-limit');
 
+const ERROR_MESSAGES = {
+  BAD_REQUEST: 'Неверно переданы данные',
+  NOT_FOUND: 'Страница по указанному маршруту не найдена',
+  INTERNAL: 'На сервере произошла ошибка',
+  ID: 'Неверный id',
+  URL: 'Неправильный формат ссылки',
+  EMAIL_CONFLICT: 'Пользователь с таким email уже существует',
+  MOVIE_CONFLICT: 'Фильм уже в избранном',
+  AUTH: 'Вы ввели неправильный логин или пароль',
+  UNAUTHORIZED:
+    'При авторизации произошла ошибка. Переданный токен некорректен',
+  FORBIDDEN: 'Недостаточно прав для совершения действия',
+  PROFILE_UPDATE: 'При обновлении профиля произошла ошибка',
+  REGISTRATION: 'При регистрации пользователя произошла ошибка',
+  LIMIT: 'Превышено количество запросов достуных для одного аккаунта, повторите попытку позже',
+  CORS: 'Not allowed by CORS',
+};
+
 const {
   MONGO_DATA_BASE = 'mongodb://localhost:27017/moviesdb-dev',
   NODE_ENV = 'development',
@@ -24,7 +42,7 @@ const CORS_OPTIONS = {
     if (ALLOWED_CORS.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(new Error(ERROR_MESSAGES.CORS));
     }
   },
 };
@@ -32,6 +50,7 @@ const CORS_OPTIONS = {
 const LIMITER = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
+  message: ERROR_MESSAGES.LIMIT,
 });
 
 const COOKIE_CONFIG = {
@@ -44,22 +63,6 @@ const LOGGER = {
   DIRNAME: 'logs',
   ERROR_FILENAME: 'error.log',
   REQUEST_FILENAME: 'request.log',
-};
-
-const ERROR_MESSAGES = {
-  BAD_REQUEST: 'Неверно переданы данные',
-  NOT_FOUND: 'Страница по указанному маршруту не найдена',
-  INTERNAL: 'На сервере произошла ошибка',
-  ID: 'Неверный id',
-  URL: 'Неправильный формат ссылки',
-  EMAIL_CONFLICT: 'Пользователь с таким email уже существует',
-  MOVIE_CONFLICT: 'Фильм уже в избранном',
-  AUTH: 'Вы ввели неправильный логин или пароль',
-  UNAUTHORIZED:
-    'При авторизации произошла ошибка. Переданный токен некорректен',
-  FORBIDDEN: 'Недостаточно прав для совершения действия',
-  PROFILE_UPDATE: 'При обновлении профиля произошла ошибка',
-  REGISTRATION: 'При регистрации пользователя произошла ошибка',
 };
 
 module.exports = {

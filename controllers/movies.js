@@ -7,15 +7,18 @@ const { MOVIE_CONFLICT, ID } = ERROR_MESSAGES;
 const getMovies = async (req, res, next) => {
   try {
     const { _id: owner } = req.user;
-    const movies = Movie.find({ owner });
+    const movies = await Movie.find({ owner });
     return res.status(200).send(movies);
   } catch (error) {
-    return next(error);
+    return error.name === 'CastError' || error.name === 'ValidationError'
+      ? next(ApiError.badRequest())
+      : next(error);
   }
 };
 
 const createMovie = async (req, res, next) => {
   try {
+    const owner = req.user._id;
     const {
       country,
       director,
@@ -30,13 +33,14 @@ const createMovie = async (req, res, next) => {
       movieId,
     } = req.body;
     const movie = await Movie.create({
+      owner,
       country,
       director,
       duration,
       year,
       description,
       image,
-      trailer,
+      trailerLink: trailer,
       nameRU,
       nameEN,
       thumbnail,

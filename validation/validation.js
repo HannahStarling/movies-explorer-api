@@ -18,8 +18,8 @@ const validateUser = celebrate({
 
 const validateUserInfo = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30).required(),
-    email: Joi.string().email().required(),
+    name: Joi.string().min(2).max(30),
+    email: Joi.string().email(),
   }),
 });
 
@@ -28,7 +28,7 @@ const validateMovieInfo = celebrate({
     country: Joi.string().required(),
     director: Joi.string().required(),
     duration: Joi.number().required(),
-    year: Joi.string().length(4).required(),
+    year: Joi.string().required(),
     description: Joi.string().required(),
     image: Joi.string().custom(validateURL).required(),
     trailer: Joi.string().custom(validateURL).required(),
