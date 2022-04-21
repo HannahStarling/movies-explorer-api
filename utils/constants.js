@@ -1,3 +1,5 @@
+const rateLimit = require('express-rate-limit');
+
 const {
   MONGO_DATA_BASE = 'mongodb://localhost:27017/moviesdb-dev',
   NODE_ENV = 'development',
@@ -27,6 +29,11 @@ const CORS_OPTIONS = {
   },
 };
 
+const LIMITER = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+});
+
 const COOKIE_CONFIG = {
   expires: new Date(Date.now() + 7 * 24 * 3600000),
   httpOnly: true,
@@ -55,6 +62,7 @@ const ERROR_MESSAGES = {
 };
 
 module.exports = {
+  LIMITER,
   CORS_OPTIONS,
   ERROR_MESSAGES,
   DATA_BASE,
