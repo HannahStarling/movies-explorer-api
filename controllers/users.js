@@ -2,7 +2,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { ApiError } = require('../errors/ApiError');
 const User = require('../models/user');
-const { JWT_CONFIG, COOKIE_CONFIG } = require('../utils/constants');
+const { JWT_CONFIG, COOKIE_CONFIG, ERROR_MESSAGES } = require('../utils/constants');
+
+const { REGISTRATION, PROFILE_UPDATE } = ERROR_MESSAGES;
 
 const signin = async (req, res, next) => {
   try {
@@ -45,7 +47,7 @@ const createUser = async (req, res, next) => {
       : next(ApiError.notFound());
   } catch (error) {
     if (error.name === 'CastError' || error.name === 'ValidationError') {
-      return next(ApiError.badRequest());
+      return next(ApiError.badRequest(REGISTRATION));
     }
     if (error.code === 11000) {
       return next(ApiError.conflict());
@@ -80,6 +82,9 @@ const updateUser = async (req, res, next) => {
       ? res.status(200).send({ name: user.name, email: user.email })
       : next(ApiError.notFound());
   } catch (error) {
+    if (error.name === 'CastError' || error.name === 'ValidationError') {
+      return next(ApiError.badRequest(PROFILE_UPDATE));
+    }
     return next(error);
   }
 };

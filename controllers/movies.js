@@ -1,5 +1,8 @@
 const { ApiError } = require('../errors/ApiError');
 const Movie = require('../models/movie');
+const { ERROR_MESSAGES } = require('../utils/constants');
+
+const { MOVIE_CONFLICT, ID } = ERROR_MESSAGES;
 
 const getMovies = async (req, res, next) => {
   try {
@@ -56,7 +59,9 @@ const createMovie = async (req, res, next) => {
       })
       : next(ApiError.iternal());
   } catch (error) {
-    return error.name === 'CastError' || error.name === 'ValidationError'
+    const { name, code } = error;
+    if (code === 11000) { return ApiError.conflict(MOVIE_CONFLICT); }
+    return name === 'CastError' || name === 'ValidationError'
       ? next(ApiError.badRequest())
       : next(error);
   }
@@ -74,7 +79,7 @@ const deleteMovie = async (req, res, next) => {
     return next(ApiError.forbidden());
   } catch (error) {
     return error.name === 'CastError'
-      ? next(ApiError.badRequest())
+      ? next(ApiError.badRequest(ID))
       : next(error);
   }
 };

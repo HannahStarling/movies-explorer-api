@@ -7,7 +7,9 @@ const { connect } = require('mongoose');
 const { errorHandler } = require('./middlewars/errorHandler');
 const { requestsLogger, errorsLogger } = require('./middlewars/logger');
 const router = require('./routes');
-const { PORT, DATA_BASE, CORS_OPTIONS, LIMITER } = require('./utils/constants');
+const {
+  PORT, DATA_BASE, CORS_OPTIONS, LIMITER,
+} = require('./utils/constants');
 
 const app = express();
 app.use(cors(CORS_OPTIONS));
