@@ -1,13 +1,16 @@
 require('dotenv').config();
 const cookieParser = require('cookie-parser');
 const express = require('express');
+const cors = require('cors');
 const { connect } = require('mongoose');
 const { errorHandler } = require('./middlewars/errorHandler');
 const { requestsLogger, errorsLogger } = require('./middlewars/logger');
 const router = require('./routes');
-const { PORT, DATA_BASE } = require('./utils/constants');
+const { PORT, DATA_BASE, CORS_OPTIONS } = require('./utils/constants');
 
 const app = express();
+app.use(cors(CORS_OPTIONS));
+app.options('*', cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use(requestsLogger);

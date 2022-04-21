@@ -2,7 +2,7 @@ const {
   MONGO_DATA_BASE = 'mongodb://localhost:27017/moviesdb-dev',
   NODE_ENV = 'development',
   JWT_SECRET = 'brillian-secret-key',
-  PORT = 3001,
+  PORT = 3000,
 } = process.env;
 const DATA_BASE = MONGO_DATA_BASE || 'mongodb://mongo/moviesdb';
 
@@ -13,6 +13,20 @@ const JWT_CONFIG = {
     expiresIn: '7d',
   },
 };
+
+const ALLOWED_CORS = ['http://localhost:3001', 'https://localhost:3001'];
+
+const CORS_OPTIONS = {
+  credentials: true,
+  origin(origin, callback) {
+    if (ALLOWED_CORS.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+};
+
 const COOKIE_CONFIG = {
   expires: new Date(Date.now() + 7 * 24 * 3600000),
   httpOnly: true,
@@ -33,13 +47,15 @@ const ERROR_MESSAGES = {
   URL: 'Неправильный формат ссылки',
   EMAIL_CONFLICT: 'Пользователь с таким email уже существует',
   AUTH: 'Вы ввели неправильный логин или пароль',
-  UNAUTHORIZED: 'При авторизации произошла ошибка. Переданный токен некорректен',
+  UNAUTHORIZED:
+    'При авторизации произошла ошибка. Переданный токен некорректен',
   FORBIDDEN: 'Недостаточно прав для совершения действия',
   PROFILE_UPDATE: 'При обновлении профиля произошла ошибка',
   REGISTRATION: 'При регистрации пользователя произошла ошибка',
 };
 
 module.exports = {
+  CORS_OPTIONS,
   ERROR_MESSAGES,
   DATA_BASE,
   LOGGER,
