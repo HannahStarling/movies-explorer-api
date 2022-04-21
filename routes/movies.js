@@ -4,9 +4,13 @@ const {
   createMovie,
   deleteMovie,
 } = require('../controllers/movies');
+const {
+  validateDataBaseId,
+  validateMovieInfo,
+} = require('../validation/validation');
 
 movieRouter.get('/', getMovies);
-movieRouter.put('/', createMovie);
-movieRouter.delete('/_id', deleteMovie);
+movieRouter.put('/', validateMovieInfo, createMovie);
+movieRouter.delete('/:id', validateDataBaseId, deleteMovie);
 
 module.exports = movieRouter;
