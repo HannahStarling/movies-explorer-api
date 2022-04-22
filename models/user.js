@@ -2,6 +2,9 @@ const { Schema, model } = require('mongoose');
 const { isEmail } = require('validator');
 const bcrypt = require('bcryptjs');
 const { ApiError } = require('../errors/ApiError');
+const { ERROR_MESSAGES } = require('../utils/constants');
+
+const { EMAIL, AUTH } = ERROR_MESSAGES;
 
 const userSchema = new Schema({
   name: {
@@ -15,7 +18,7 @@ const userSchema = new Schema({
     unique: true,
     required: true,
     validator: isEmail,
-    message: 'Невалидный email',
+    message: EMAIL,
   },
   password: {
     type: String,
@@ -30,11 +33,11 @@ userSchema.statics.findUserByCredentials = async function findUserByCredentials(
 ) {
   const user = await this.findOne({ email }).select('+password');
   if (!user) {
-    return Promise.reject(ApiError.badRequest('Неправильные почта или пароль'));
+    return Promise.reject(ApiError.badRequest(AUTH));
   }
   const matched = bcrypt.compare(password, user.password);
   return !matched
-    ? Promise.reject(ApiError.badRequest('Неправильные почта или пароль'))
+    ? Promise.reject(ApiError.badRequest(AUTH))
     : user;
 };
 
