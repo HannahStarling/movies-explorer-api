@@ -83,7 +83,7 @@ const updateUser = async (req, res, next) => {
       : next(ApiError.notFound());
   } catch (error) {
     const { name, code } = error;
-    if (code === 11000) { return ApiError.conflict(); }
+    if (code === 11000) { return next(ApiError.conflict()); }
     return name === 'CastError' || name === 'ValidationError'
       ? next(ApiError.badRequest(PROFILE_UPDATE))
       : next(error);

@@ -64,7 +64,9 @@ const createMovie = async (req, res, next) => {
       : next(ApiError.iternal());
   } catch (error) {
     const { name, code } = error;
-    if (code === 11000) { return ApiError.conflict(MOVIE_CONFLICT); }
+    if (code === 11000) {
+      return next(ApiError.conflict(MOVIE_CONFLICT));
+    }
     return name === 'CastError' || name === 'ValidationError'
       ? next(ApiError.badRequest())
       : next(error);
@@ -73,12 +75,12 @@ const createMovie = async (req, res, next) => {
 
 const deleteMovie = async (req, res, next) => {
   try {
+    const owner = req.user._id;
     const { id } = req.params;
-    const { _id } = req.user;
-    const { owner } = Movie.findById(id);
-    if (_id.toString() === owner.toString()) {
-      const deleteCard = await Movie.findByIdAndRemove(id);
-      return res.status(200).send(deleteCard);
+    const movie = await Movie.findById(id);
+    if (owner.toString() === movie.owner.toString()) {
+      const deletedMovie = await Movie.findByIdAndRemove(id);
+      return res.status(200).send(deletedMovie);
     }
     return next(ApiError.forbidden());
   } catch (error) {
