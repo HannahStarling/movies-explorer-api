@@ -10,7 +10,7 @@ const {
 } = require('../validation/validation');
 
 movieRouter.get('/', getMovies);
-movieRouter.put('/', validateMovieInfo, createMovie);
+movieRouter.post('/', validateMovieInfo, createMovie);
 movieRouter.delete('/:id', validateDataBaseId, deleteMovie);
 
 module.exports = movieRouter;
