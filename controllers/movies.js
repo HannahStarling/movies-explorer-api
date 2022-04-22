@@ -47,20 +47,7 @@ const createMovie = async (req, res, next) => {
       movieId,
     });
     return movie
-      ? res.status(200).send({
-        country: movie.country,
-        director: movie.director,
-        duration: movie.duration,
-        year: movie.year,
-        description: movie.description,
-        image: movie.image,
-        trailerLink: movie.trailerLink,
-        nameRU: movie.nameRU,
-        thumbnail: movie.thumbnail,
-        owner: movie.owner,
-        nameEN: movie.nameEN,
-        movieId: movie.movieId,
-      })
+      ? res.status(200).send(movie)
       : next(ApiError.iternal());
   } catch (error) {
     const { name, code } = error;
