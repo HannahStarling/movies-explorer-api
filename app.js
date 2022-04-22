@@ -16,10 +16,10 @@ const {
 
 const app = express();
 app.use(requestsLogger);
+app.use(LIMITER);
 app.use(cors(CORS_OPTIONS));
 app.options('*', cors());
 app.use(helmet()); // Content-Security-Policy
-app.use(LIMITER);
 app.use(cookieParser());
 app.use(express.json());
 
