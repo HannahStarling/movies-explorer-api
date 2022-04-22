@@ -8,7 +8,10 @@ const { errorHandler } = require('./middlewars/errorHandler');
 const { requestsLogger, errorsLogger } = require('./middlewars/logger');
 const router = require('./routes');
 const {
-  PORT, DATA_BASE, CORS_OPTIONS, LIMITER,
+  PORT,
+  MONGO_DATA_BASE,
+  CORS_OPTIONS,
+  LIMITER,
 } = require('./utils/constants');
 
 const app = express();
@@ -25,7 +28,7 @@ app.use(errorsLogger);
 app.use(errorHandler);
 
 const start = async () => {
-  await connect(DATA_BASE);
+  await connect(MONGO_DATA_BASE);
   // eslint-disable-next-line no-console
   app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 };

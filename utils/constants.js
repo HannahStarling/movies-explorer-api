@@ -14,19 +14,19 @@ const ERROR_MESSAGES = {
   FORBIDDEN: 'Недостаточно прав для совершения действия',
   PROFILE_UPDATE: 'При обновлении профиля произошла ошибка',
   REGISTRATION: 'При регистрации пользователя произошла ошибка',
-  LIMIT: 'Превышено количество запросов достуных для одного аккаунта, повторите попытку позже',
+  LIMIT:
+    'Превышено количество запросов достуных для одного аккаунта, повторите попытку позже',
   CORS: 'Not allowed by CORS',
 };
 
 const {
-  MONGO_DATA_BASE = 'mongodb://localhost:27017/moviesdb-dev',
+  MONGO_DATA_BASE = 'mongodb://localhost:27017/moviesdb',
   NODE_ENV = 'development',
-  JWT_SECRET = 'brillian-secret-key',
+  JWT_SECRET = 'brilliant-secret-key',
   PORT = 3000,
 } = process.env;
-const DATA_BASE = MONGO_DATA_BASE || 'mongodb://mongo/moviesdb';
 
-const JWT_KEY = NODE_ENV === 'production' ? JWT_SECRET : 'brillian-secret-key';
+const JWT_KEY = NODE_ENV === 'production' ? JWT_SECRET : 'brilliant-secret-key';
 const JWT_CONFIG = {
   key: JWT_KEY,
   expires: {
@@ -34,7 +34,12 @@ const JWT_CONFIG = {
   },
 };
 
-const ALLOWED_CORS = ['http://localhost:3001', 'https://localhost:3001'];
+const ALLOWED_CORS = [
+  'http://localhost:3001',
+  'https://localhost:3001',
+  'https://localhost:3000',
+  'http://localhost:3000',
+];
 
 const CORS_OPTIONS = {
   credentials: true,
@@ -69,7 +74,7 @@ module.exports = {
   LIMITER,
   CORS_OPTIONS,
   ERROR_MESSAGES,
-  DATA_BASE,
+  MONGO_DATA_BASE,
   LOGGER,
   COOKIE_CONFIG,
   JWT_CONFIG,
