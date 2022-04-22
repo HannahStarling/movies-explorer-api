@@ -16,10 +16,17 @@ const validateUser = celebrate({
   }),
 });
 
+const validateLoginUser = celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().email().required(),
+    password: Joi.string().required(),
+  }),
+});
+
 const validateUserInfo = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    email: Joi.string().email(),
+    name: Joi.string().min(2).max(30).required(),
+    email: Joi.string().email().required(),
   }),
 });
 
@@ -40,6 +47,7 @@ const validateMovieInfo = celebrate({
 });
 
 module.exports = {
+  validateLoginUser,
   validateUser,
   validateUserInfo,
   validateDataBaseId,
