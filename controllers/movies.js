@@ -2,7 +2,7 @@ const { ApiError } = require('../errors/ApiError');
 const Movie = require('../models/movie');
 const { ERROR_MESSAGES } = require('../utils/constants');
 
-const { MOVIE_CONFLICT, ID } = ERROR_MESSAGES;
+const { MOVIE_CONFLICT, ID, MOVIE_NOT_EXIST } = ERROR_MESSAGES;
 
 const getMovies = async (req, res, next) => {
   try {
@@ -46,9 +46,7 @@ const createMovie = async (req, res, next) => {
       thumbnail,
       movieId,
     });
-    return movie
-      ? res.status(200).send(movie)
-      : next(ApiError.iternal());
+    return movie ? res.status(200).send(movie) : next(ApiError.iternal());
   } catch (error) {
     const { name, code } = error;
     if (code === 11000) {
@@ -65,7 +63,11 @@ const deleteMovie = async (req, res, next) => {
     const owner = req.user._id;
     const { id } = req.params;
     const movie = await Movie.findById(id);
-    if (owner.toString() === movie.owner.toString()) {
+    if (!movie) {
+      return next(ApiError.notFound(MOVIE_NOT_EXIST));
+    }
+    const isOwner = owner.toString() === movie.owner.toString();
+    if (isOwner) {
       const deletedMovie = await Movie.findByIdAndRemove(id);
       return res.status(200).send(deletedMovie);
     }
