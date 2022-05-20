@@ -37,6 +37,8 @@ const JWT_CONFIG = {
 };
 
 const ALLOWED_CORS = [
+  'http://localhost:3000',
+  'https://localhost:3000',
   'http://localhost:3001',
   'https://localhost:3001',
   'https://api.filmski.nomoredomains.work',
