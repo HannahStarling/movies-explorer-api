@@ -66,6 +66,7 @@ const LIMITER = rateLimit({
 const COOKIE_CONFIG = {
   expires: new Date(Date.now() + 7 * 24 * 3600000),
   httpOnly: true,
+  sameSite: 'none',
 };
 
 const LOGGER = {
