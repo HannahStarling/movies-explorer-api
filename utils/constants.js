@@ -67,6 +67,7 @@ const COOKIE_CONFIG = {
   expires: new Date(Date.now() + 7 * 24 * 3600000),
   httpOnly: true,
   sameSite: 'none',
+  secure: true,
 };
 
 const LOGGER = {
