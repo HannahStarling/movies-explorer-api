@@ -24,8 +24,12 @@ const signin = async (req, res, next) => {
 };
 
 const signout = async (req, res, next) => {
-  res.clearCookie('jwt');
-  next(ApiError.unauthorized());
+  try {
+    res.clearCookie('jwt');
+    return res.status(200).send({ message: 'Выход из аккаунта произошёл успешно!' });
+  } catch (error) {
+    return next(error);
+  }
 };
 
 const createUser = async (req, res, next) => {
