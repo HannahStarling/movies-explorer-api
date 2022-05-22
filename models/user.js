@@ -35,10 +35,12 @@ userSchema.statics.findUserByCredentials = async function findUserByCredentials(
   if (!user) {
     return Promise.reject(ApiError.badRequest(AUTH));
   }
-  const matched = bcrypt.compare(password, user.password);
-  return !matched
-    ? Promise.reject(ApiError.badRequest(AUTH))
-    : user;
+  return bcrypt.compare(password, user.password).then((matched) => {
+    if (!matched) {
+      return Promise.reject(ApiError.badRequest(AUTH));
+    }
+    return user;
+  });
 };
 
 module.exports = model('user', userSchema);
