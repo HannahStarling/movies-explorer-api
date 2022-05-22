@@ -25,7 +25,11 @@ const signin = async (req, res, next) => {
 
 const signout = async (req, res, next) => {
   try {
-    res.clearCookie('jwt');
+    res.clearCookie('jwt', {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true,
+    });
     return res.status(200).send({ message: 'Выход из аккаунта произошёл успешно!' });
   } catch (error) {
     return next(error);
